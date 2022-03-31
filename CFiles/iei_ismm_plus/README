@@ -1,0 +1,143 @@
+##################################
+###   SDK Description
+##################################
+   IEI ISMM Plus SDK supports following functions on IEI SBC or System.
+*Digital Input and Output Control
+  --4 In and 4 Out model
+  --8 In and 8 Out model (Support in the Future)
+  --12 In and 12 Out model (Support in the Future)
+
+*Watchdog Control
+  --Watchdog Start and Stop
+  --Watchdog Time and Unit Setup
+  --Check Watchdog support state
+
+   The SDK Folder Description.
+*module -- The kernel module source.
+*lib -- The share library including i386 and x64.
+*include -- The inclusion header file for SDK API.
+*sample -- The testing sample source code.
+
+##################################
+###   Installation Guide
+##################################
+   To install the SDK please just use the deployment folder and change the folder name as you preferrence.
+   CMD: tar -xf iei_ismm_plus_SDK_v1.0.tgz 
+   
+   Also let shared library -- libismmplus.so to be located in your system's LIB path (/usr/lib for most of the cases).
+   CMD: sudo cp lib/i386/libismmplus.so /usr/lib
+   Please note that there are 32 and 64 bits version and chose correct one for your running operating system.
+   
+   After then you may try to build kernel module first. 
+   Please be sure that your kerenl header package (linux-headers-`uname -r`) must be installed before you start building. 
+   To compile driver by typing make command in module folder.
+   CMD: make
+   Insert the built module acpi_call.ko.
+   CMD: sudo insmod acpi_call.ko
+   
+   for now you can try to build you demostration program in the sample folder for testing. 
+   Type command make under the sample folder to compile the sample code programs.
+   CMD: make
+   
+##################################
+###   Running Test
+##################################
+*For Watchdog Control
+   Enter the sample folder and execute the binary being built.
+	./wdttest
+	========Watchdog ISMM+ Test========
+	1:Setup Timeout value
+	2:Stop Watchdog Countdown
+	3:Start Watchdog Countdown
+	4:Check Watchdog Support
+	5:Close Test
+	SELECT:
+
+   Chose number listed in the function menu to try it out.
+
+*For Digital Input Output Control
+   Enter the sample folder and execute the binary being built.
+	./diotest
+	========DIO ISMM+ Test========
+	1:Read Input and Output pin Status
+	2:Write Output pin Data
+	3:Close Test
+	SELECT:
+
+   Chose number listed in the function menu to try it out.
+
+##################################
+###   SDK API
+##################################
+*For Watchdog Control API
+  //This function call stores support state in object WDTO. Zero means not support.
+  --int ismmp_WDT_support(struct WDTO *wdt);
+  //This function call setup timeout value (1-255) and time unit (0=second, 1=minute) in objcet WDTO. That will be applied when watchdog starting.
+  --int ismmp_WDT_set_time(struct WDTO *wdt, uchar time, uchar unit);
+  //This function call give the STOP instruction.
+  --int ismmp_WDT_stop(struct WDTO *wdt);
+  //This function call give the START instruction. 
+  --int ismmp_WDT_start(struct WDTO *wdt, uchar time, uchar unit);
+
+*Relevant Definition
+  //The watchdog simple object for configuration setup.
+  --typedef struct WDTO{
+	uchar support;
+	uchar timeout;
+	uchar timeunit;
+	uchar act;
+	}WDTO_t;
+
+*For Digital Input Output Control API
+  //This function call read back 4 input pin status and 4 output pin data state.
+  --int ismmp_DIO_get_4dio_status(struct DIOF *dio);
+  //This function call set 4 output pin data state.
+  --int ismmp_DIO_set_4dout_data(struct DIOF *dio);
+
+*Relevant Definition
+  //The dio simple ojbect for the 4in/4out model.
+  --typedef struct DIOF{
+	uchar dInBits;
+	uchar dOutBits;
+	}DIOF_t;
+
+  //The PIN number enumeration let the sample code be more readable.
+  --typedef enum{
+	pin0 = 0,
+	pin1,
+	pin2,
+	pin3,
+	pin4,
+	pin5,
+	pin6,
+	pin7,
+	pin8,
+	pin9,
+	pin10,
+	pin11,
+	nosupport
+	}DIO_PIN;
+
+##################################
+###  IEI Support Model
+##################################
+NOTE: This supporting list should be update sooner or later.
+Please refer to it for the time being.
+*SBC
+ E445, E439, SAA8
+*System
+ H781, SEK8
+
+##################################
+###   Verified Environment
+##################################
+*64-bits Environment:
+  --GCC v4.8.4
+  --LIBC6 v2.19
+  --Ubuntu 14.04 LTS 64-bits
+
+*32-bits Environment:
+  --GCC v4.7.2
+  --LIBC6 v2.19
+  --Debian 7.0 32-bits
+

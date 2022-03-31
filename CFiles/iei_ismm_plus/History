@@ -1,0 +1,14 @@
+##################################################################
+Release Version: V1.1
+Release Date : 2016/06/07
+Description:
+	1. Fix library memory leak issue.
+	2. Add dioloop testing for memory leak issue.
+	3. Support library build process for i386 arch in AMD64 platform.
+#################################################################
+Release Version: V1.0
+Release Date : 2015/07/30
+Description:
+	1. First release version.
+	Support Watchdog and Digital IO(4in/4out) functions.
+#################################################################

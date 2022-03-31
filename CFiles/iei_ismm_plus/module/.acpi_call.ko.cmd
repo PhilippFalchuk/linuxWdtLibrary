@@ -1,0 +1,1 @@
+cmd_/home/bs/Загрузки/iei_ismm_plus/module/acpi_call.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/bs/Загрузки/iei_ismm_plus/module/acpi_call.ko /home/bs/Загрузки/iei_ismm_plus/module/acpi_call.o /home/bs/Загрузки/iei_ismm_plus/module/acpi_call.mod.o;  true
